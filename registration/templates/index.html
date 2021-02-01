@@ -6,4 +6,8 @@
 
 {%block content%}
     <h1>WELCOME, {{current_user.username}}</h1>
+    <img src="{{url_for('static', filename='profile/'+current_user.user_image)}}" width='200' height='200' />
+    <h1>Info:</h1>
+    Username: <i>{{current_user.username}}</i><br>
+    Email: <i>{{current_user.email}}</i>
 {%endblock%}

@@ -1,8 +1,11 @@
+import os
 from registration import app, login_manager, db
 from flask import render_template, url_for, redirect, flash, request
 from registration import forms
 from registration.models import User
 from flask_login import login_user, current_user, logout_user, login_required
+from werkzeug.utils import secure_filename
+from hashlib import md5
 
 @app.route("/")
 @app.route("/home")
@@ -37,6 +40,15 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.generate_password(form.password.data)
+        if form.photo.data:
+            file = form.photo.data
+            filename = secure_filename(file.filename)
+            filename_, file_extension = filename.rsplit('.',1)
+            # change the user photo name to his email and hash it
+            filename_ = md5(form.email.data.encode('utf-8')).hexdigest()
+            filename = filename_+'.'+file_extension
+            file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            user.user_image = filename
         db.session.add(user)
         db.session.commit()
         flash(f"Welcome {form.username.data}, You are now a member!", "success")

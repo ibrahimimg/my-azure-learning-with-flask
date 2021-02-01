@@ -5,7 +5,7 @@
 {%endblock%}
 
 {%block content%}
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         REGISTER
         {{form.hidden_tag()}}
         <p>
@@ -26,6 +26,7 @@
                 {% endfor %}
             {% endif %}
         </p>
+
         <p>
             {{form.password.label}}<br />
             {{form.password(size=32)}}<br />
@@ -44,6 +45,17 @@
                 {% endfor %}
             {% endif %}
         </p>
+
+        <p>
+            {{form.photo.label}}<br />
+            {{form.photo(size=32)}}<br />
+            {% if form.photo.errors %}
+                {% for e in form.photo.errors %}
+                    <span style="color: red;">{{e}}</span>
+                {% endfor %}
+            {% endif %}
+        </p>
+
         <p> 
             {{form.submit()}}
         </p>
