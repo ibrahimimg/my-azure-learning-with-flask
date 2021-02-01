@@ -5,15 +5,20 @@
     {% endblock %}
 </head>
 <body>
-    <a href="{{url_for('home')}}">Home</a>
-    <a href="{{url_for('login')}}">Login</a>
-    <a href="{{url_for('register')}}">Register</a>
-    <p></p>
+    
+    {% if current_user.is_authenticated %}
+        <a href="{{url_for('home')}}">Home</a>
+        <a href="{{url_for('logout')}}">Logout</a>
+    {% else %}
+        <a href="{{url_for('login')}}">Login</a>
+        <a href="{{url_for('register')}}">Register</a>
+        <p></p>
+    {% endif %}
     <hr />
-    {% with messages=get_flashed_messages() %}
+    {% with messages=get_flashed_messages(with_categories=True) %}
         {% if messages %}
-            {% for m in messages%}
-                {{ m }}
+            {% for c,m in messages%}
+                <div class="{{c}}">{{ m }}</div>
             {% endfor %}
         {% endif %}
     {% endwith %}
